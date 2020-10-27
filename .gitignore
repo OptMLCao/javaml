@@ -1,0 +1,23 @@
+issue.info
+output
+bin
+build
+pkg
+.classpath
+.gradle
+.project
+.settings
+.DS_Store
+*.class
+*.iml
+*.log
+*.log.*
+.idea
+*.ipr
+*.iws
+*.bvar.data
+target/
+debug/
+lib/
+target /
+.idea/

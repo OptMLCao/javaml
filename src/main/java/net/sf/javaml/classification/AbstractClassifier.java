@@ -35,9 +35,28 @@ public abstract class AbstractClassifier implements Classifier {
 
     protected Set<Object> parentClasses = null;
 
+    /**
+     * 获取训练数据样本分类或标签.
+     *
+     * @param data the data set to be used to create the classifier 训练数据.
+     */
+    @Override
+    public void buildClassifier(Dataset data) {
+        this.parentClasses = new HashSet<Object>();
+        parentClasses.addAll(data.classes());
+    }
+
+    /**
+     * 分类.
+     *
+     * @param instance the instance to be classified
+     * @return
+     */
     @Override
     public Object classify(Instance instance) {
+        // 获取每个分类的得分.
         Map<Object, Double> distribution = classDistribution(instance);
+        // 使用贪心的原则输出分类或标签号.
         double max = 0;
         Object out = null;
         for (Object key : distribution.keySet()) {
@@ -49,6 +68,12 @@ public abstract class AbstractClassifier implements Classifier {
         return out;
     }
 
+    /**
+     * 分类得分.
+     *
+     * @param instance the instance to be classified
+     * @return
+     */
     @Override
     public Map<Object, Double> classDistribution(Instance instance) {
         HashMap<Object, Double> out = new HashMap<Object, Double>();
@@ -57,13 +82,6 @@ public abstract class AbstractClassifier implements Classifier {
         }
         out.put(classify(instance), 1.0);
         return out;
-
     }
 
-    @Override
-    public void buildClassifier(Dataset data) {
-        this.parentClasses = new HashSet<Object>();
-        parentClasses.addAll(data.classes());
-
-    }
 }

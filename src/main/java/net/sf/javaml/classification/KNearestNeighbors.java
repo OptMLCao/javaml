@@ -33,6 +33,7 @@ import net.sf.javaml.distance.EuclideanDistance;
 
 /**
  * Implementation of the K nearest neighbor (KNN) classification algorithm.
+ * KNN分器.
  *
  * @author Thomas Abeel
  */
@@ -40,10 +41,12 @@ public class KNearestNeighbors extends AbstractClassifier {
 
     private static final long serialVersionUID = 1560149339188819924L;
 
+    // 训练数据.
     private Dataset training;
 
     private int k;
 
+    // 距离度量器.
     private DistanceMeasure dm;
 
     /**
@@ -74,34 +77,39 @@ public class KNearestNeighbors extends AbstractClassifier {
 
     @Override
     public Map<Object, Double> classDistribution(Instance instance) {
-        if (training == null)
+        if (training == null) {
             throw new TrainingRequiredException();
+        }
         /* Get nearest neighbors */
         Set<Instance> neighbors = training.kNearest(k, instance, dm);
         /* Build distribution map */
         HashMap<Object, Double> out = new HashMap<Object, Double>();
-        for (Object o : training.classes())
-            out.put(o, 0.0);
+        // 获取全部训练样本的分类.
+        for (Object obj : training.classes()) {
+            out.put(obj, 0.0);
+        }
         for (Instance i : neighbors) {
             out.put(i.classValue(), out.get(i.classValue()) + 1);
         }
-
         double min = k;
         double max = 0;
         for (Object key : out.keySet()) {
             double val = out.get(key);
-            if (val > max)
+            if (val > max) {
                 max = val;
-            if (val < min)
+            }
+            if (val < min) {
                 min = val;
+            }
         }
-        /* Normalize distribution map */
+        /* Normalize distribution map, 正则归一化处理 */
         if (max != min) {
             for (Object key : out.keySet()) {
                 out.put(key, (out.get(key) - min) / (max - min));
             }
         }
-
+        // 输出的分类概率.
         return out;
     }
+
 }

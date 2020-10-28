@@ -24,6 +24,8 @@ package net.sf.javaml.classification;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.sun.security.auth.UnixNumericUserPrincipal;
+
 import net.sf.javaml.core.Dataset;
 import net.sf.javaml.core.Instance;
 
@@ -49,13 +51,13 @@ public class AbstractMeanClassifier extends AbstractClassifier {
         super.buildClassifier(data);
         mean = new HashMap<Object, Instance>();
         HashMap<Object, Integer> count = new HashMap<Object, Integer>();
-        for (Instance i : data) {
-            if (!mean.containsKey(i.classValue())) {
-                mean.put(i.classValue(), i);
-                count.put(i.classValue(), 1);
+        for (Instance instance : data) {
+            if (!mean.containsKey(instance.classValue())) {
+                mean.put(instance.classValue(), instance);
+                count.put(instance.classValue(), 1);
             } else {
-                mean.put(i.classValue(), mean.get(i.classValue()).add(i));
-                count.put(i.classValue(), count.get(i.classValue()) + 1);
+                mean.put(instance.classValue(), mean.get(instance.classValue()).add(instance));
+                count.put(instance.classValue(), count.get(instance.classValue()) + 1);
             }
         }
         for (Object o : mean.keySet()) {

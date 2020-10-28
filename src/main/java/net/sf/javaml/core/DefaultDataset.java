@@ -135,23 +135,22 @@ public class DefaultDataset extends Vector<Instance> implements Dataset {
     }
 
     /**
-     * Returns the k instances of the given data set that are the closest to the
-     * instance that is given as a parameter.
+     * Returns the k instances of the given data set that are the closest to the instance that is given as a parameter.
      *
-     * @param dm   the distance measure used to calculate the distance between
-     *             instances
+     * @param dm   the distance measure used to calculate the distance between instances.
      * @param inst the instance for which we need to find the closest
      * @return the instances from the supplied data set that are closest to the
      * supplied instance
      */
     @Override
     public Set<Instance> kNearest(int k, Instance inst, DistanceMeasure dm) {
+        // k最邻近
         Map<Instance, Double> closest = new HashMap<Instance, Double>();
         double max = dm.getMaxValue();
-        for (Instance tmp : this) {
-            double d = dm.measure(inst, tmp);
-            if (dm.compare(d, max) && !inst.equals(tmp)) {
-                closest.put(tmp, d);
+        for (Instance instance : this) {
+            double d = dm.measure(inst, instance);
+            if (dm.compare(d, max) && !inst.equals(instance)) {
+                closest.put(instance, d);
                 if (closest.size() > k)
                     max = removeFarthest(closest, dm);
             }
@@ -161,33 +160,29 @@ public class DefaultDataset extends Vector<Instance> implements Dataset {
     }
 
     /*
-     * Removes the element from the vector that is farthest from the supplied
-     * element.
+     * Removes the element from the vector that is farthest from the supplied element.
      */
     private double removeFarthest(Map<Instance, Double> vector, DistanceMeasure dm) {
-        Instance tmp = null;// ; = vector.get(0);
+        Instance tmp = null;
         double max = dm.getMinValue();
-        //System.out.println("minvalue:"+max);
-        for (Instance inst : vector.keySet()) {
-            double d = vector.get(inst);
-
+        for (Instance instance : vector.keySet()) {
+            double d = vector.get(instance);
             if (dm.compare(max, d)) {
                 max = d;
-                tmp = inst;
+                tmp = instance;
             }
-            // System.out.println("d="+d+"\t"+max);
         }
         vector.remove(tmp);
         return max;
-
     }
 
     @Override
     public Dataset[] folds(int numFolds, Random rg) {
         Dataset[] out = new Dataset[numFolds];
         List<Integer> indices = new Vector<Integer>();
-        for (int i = 0; i < this.size(); i++)
+        for (int i = 0; i < this.size(); i++) {
             indices.add(i);
+        }
         int size = (this.size() / numFolds) + 1;
         int[][] array = new int[numFolds][size];
         for (int i = 0; i < size; i++) {
@@ -210,7 +205,6 @@ public class DefaultDataset extends Vector<Instance> implements Dataset {
             out[i] = new Fold(this, indi);
 
         }
-        // System.out.println(Arrays.deepToString(array));
         return out;
     }
 
@@ -223,20 +217,20 @@ public class DefaultDataset extends Vector<Instance> implements Dataset {
 
     @Override
     public int classIndex(Object clazz) {
-
-        if (clazz != null)
+        if (clazz != null) {
             return this.classes().headSet(clazz).size();
-        else
+        } else {
             return -1;
-
+        }
     }
 
     @Override
     public Object classValue(int index) {
         int i = 0;
         for (Object o : this.classes) {
-            if (i == index)
+            if (i == index) {
                 return o;
+            }
             i++;
         }
         return null;
@@ -250,4 +244,5 @@ public class DefaultDataset extends Vector<Instance> implements Dataset {
         }
         return out;
     }
+
 }

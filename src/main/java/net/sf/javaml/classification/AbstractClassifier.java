@@ -33,6 +33,7 @@ public abstract class AbstractClassifier implements Classifier {
 
     private static final long serialVersionUID = -4461661354949399603L;
 
+    // 父类的类别，注意parentCLasses选用的数据结构;
     protected Set<Object> parentClasses = null;
 
     /**

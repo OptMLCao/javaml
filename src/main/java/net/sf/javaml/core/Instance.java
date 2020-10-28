@@ -28,6 +28,7 @@ import java.util.SortedSet;
 
 /**
  * The interface for instances in a data set.
+ * The Instance Interface actually is another Map data structure.
  *
  * @author Thomas Abeel
  * @see Dataset

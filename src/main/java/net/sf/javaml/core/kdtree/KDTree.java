@@ -42,7 +42,7 @@ import java.util.Vector;
  * Modifying a value between insertion and retrieval will therefore modify the
  * value stored in the tree.
  * </UL>
- *
+ * <p>
  * k-d树是每个节点都为k维点的二叉树，所有非叶子节点可以视作用一个超平面把空间分割成两个半空间。
  *
  * @author Simon Levy, Bjoern Heckel

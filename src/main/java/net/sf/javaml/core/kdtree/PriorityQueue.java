@@ -25,6 +25,9 @@
  */
 package net.sf.javaml.core.kdtree;
 
+/**
+ * 自行实现有优先队列.
+ */
 class PriorityQueue implements java.io.Serializable {
 
     /**
@@ -75,6 +78,7 @@ class PriorityQueue implements java.io.Serializable {
      * get's to leave first.
      */
     public PriorityQueue() {
+        // 初始化的时候容量为20.
         init(20);
     }
 
@@ -150,8 +154,9 @@ class PriorityQueue implements java.io.Serializable {
      * @return the object with the highest priority or if it's empty null
      */
     public Object remove() {
-        if (count == 0)
+        if (count == 0) {
             return null;
+        }
         Object element = data[1];
         /* swap the last element into the first */
         data[1] = data[count];

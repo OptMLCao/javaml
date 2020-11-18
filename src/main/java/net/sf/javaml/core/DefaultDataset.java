@@ -86,6 +86,7 @@ public class DefaultDataset extends Vector<Instance> implements Dataset {
 
     private static final long serialVersionUID = 8586030444860912681L;
 
+    // classes使用TreeSe, 天生具备排序属性;
     private TreeSet<Object> classes = new TreeSet<Object>();
 
     @Override
@@ -131,6 +132,7 @@ public class DefaultDataset extends Vector<Instance> implements Dataset {
 
     @Override
     public SortedSet<Object> classes() {
+        // 使用TreeSet储存元素，故此无需再次排序，直接返回有序队列.
         return classes;
     }
 

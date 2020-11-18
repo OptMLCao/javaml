@@ -25,7 +25,6 @@ import java.util.SortedSet;
 
 import org.junit.Test;
 
-import lombok.extern.flogger.Flogger;
 import lombok.extern.slf4j.Slf4j;
 import net.sf.javaml.tools.InstanceTools;
 

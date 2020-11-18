@@ -30,6 +30,7 @@ import net.sf.javaml.distance.DistanceMeasure;
 
 /**
  * Interface for a data set.
+ * 定于数据集接口.
  *
  * @author Thomas Abeel
  * @version 0.1.7

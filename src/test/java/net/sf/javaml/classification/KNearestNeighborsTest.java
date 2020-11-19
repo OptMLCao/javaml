@@ -26,6 +26,7 @@ import java.io.IOException;
 
 import org.junit.Test;
 
+import lombok.extern.slf4j.Slf4j;
 import net.sf.javaml.core.Dataset;
 import net.sf.javaml.core.Instance;
 import net.sf.javaml.tools.data.FileHandler;
@@ -35,6 +36,7 @@ import net.sf.javaml.tools.data.FileHandler;
  *
  * @author Thomas Abeel
  */
+@Slf4j
 public class KNearestNeighborsTest {
     /**
      * Shows the default usage of the KNN algorithm.
@@ -42,8 +44,10 @@ public class KNearestNeighborsTest {
     @Test
     public void test_iris_ifUse_KNN() throws IOException {
 
+        String filePath = "./src/test/resources/net.sf.javaml/data/devtools/iris.data";
+
         /* Load a data set */
-        Dataset data = FileHandler.loadDataset(new File("/Users/caogaoli/IdeaProjects/javaml/src/test/resources/devtools/data/iris.data"), 4, ",");
+        Dataset data = FileHandler.loadDataset(new File(filePath), 4, ",");
         /*
          * Contruct a KNN classifier that uses 5 neighbors to make a decision.
          */
@@ -54,7 +58,7 @@ public class KNearestNeighborsTest {
          * Load a data set for evaluation, this can be a different one, but we
          * will use the same one.
          */
-        Dataset dataForClassification = FileHandler.loadDataset(new File("/Users/caogaoli/IdeaProjects/javaml/src/test/resources/devtools/data/iris.data"), 4, ",");
+        Dataset dataForClassification = FileHandler.loadDataset(new File(filePath), 4, ",");
         /* Counters for correct and wrong predictions. */
         int correct = 0, wrong = 0;
         /* Classify all instances and check with the correct class values */
@@ -66,8 +70,8 @@ public class KNearestNeighborsTest {
             else
                 wrong++;
         }
-        System.out.println("Correct predictions  " + correct);
-        System.out.println("Wrong predictions " + wrong);
+        log.info("Correct predictions  " + correct);
+        log.info("Wrong predictions " + wrong);
 
     }
 

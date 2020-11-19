@@ -44,7 +44,7 @@ public class TutorialEnsembleFeatureSelection {
      */
     public static void main(String[] args) throws Exception {
         /* Load the iris data set */
-        Dataset data = FileHandler.loadDataset(new File("devtools/data/iris.data"), 4, ",");
+        Dataset data = FileHandler.loadDataset(new File("net.sf.javaml/data/devtools/iris.data"), 4, ",");
         /* Create a feature ranking algorithm */
         RecursiveFeatureEliminationSVM[] svmrfes = new RecursiveFeatureEliminationSVM[10];
         for (int i = 0; i < svmrfes.length; i++)

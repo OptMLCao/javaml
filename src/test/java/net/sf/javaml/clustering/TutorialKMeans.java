@@ -23,6 +23,9 @@ package net.sf.javaml.clustering;
 
 import java.io.File;
 
+import org.junit.Test;
+
+import lombok.extern.slf4j.Slf4j;
 import net.sf.javaml.core.Dataset;
 import net.sf.javaml.tools.data.FileHandler;
 
@@ -31,15 +34,14 @@ import net.sf.javaml.tools.data.FileHandler;
  *
  * @author Thomas Abeel
  */
+@Slf4j
 public class TutorialKMeans {
 
-    /**
-     * Tests the k-means algorithm with default parameter settings.
-     */
-    public static void main(String[] args) throws Exception {
-
+    @Test
+    public void testKMeans() throws Exception {
+        String filePath = "./src/test/resources/net.sf.javaml/data/devtools/iris.data";
         /* Load a dataset */
-        Dataset data = FileHandler.loadDataset(new File("devtools/data/iris.data"), 4, ",");
+        Dataset data = FileHandler.loadDataset(new File(filePath), 4, ",");
         /*
          * Create a new instance of the KMeans algorithm, with no options
          * specified. By default this will generate 4 clusters.
@@ -50,8 +52,7 @@ public class TutorialKMeans {
          * each dataset representing a cluster
          */
         Dataset[] clusters = km.cluster(data);
-        System.out.println("Cluster count: " + clusters.length);
-
+        log.info("Cluster count: " + clusters.length);
     }
 
 }

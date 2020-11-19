@@ -44,7 +44,7 @@ public class TutorialWekaAttributeSelection {
 
 	public static void main(String[] args) throws IOException {
 		/* Load data */
-		Dataset data = FileHandler.loadDataset(new File("devtools/data/iris.data"),
+		Dataset data = FileHandler.loadDataset(new File("net.sf.javaml/data/devtools/iris.data"),
 				4, ",");
 		/* Create a AS Evaluation algorithm */
 		ASEvaluation eval = new GainRatioAttributeEval();

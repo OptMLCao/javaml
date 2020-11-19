@@ -29,7 +29,7 @@ import net.sf.javaml.core.Instance;
 
 /**
  * Interface for all classifiers.
- * 分类器.
+ * 分类器顶级接口.
  *
  * @author Thomas Abeel
  */
@@ -47,9 +47,8 @@ public interface Classifier extends Serializable {
      * Classify the instance according to this classifier.
      * 通过分类器对测试样例进行分类.
      *
-     * @param instance the instance to be classified
-     * @return the class to which this instance belongs or null if it doesn't
-     * belong to any of the known classes.
+     * @param instance the instance to be classified 测试集.
+     * @return the class to which this instance belongs or null if it doesn't belong to any of the known classes.
      */
     Object classify(Instance instance);
 
@@ -64,8 +63,7 @@ public interface Classifier extends Serializable {
      * value, the value for that class equals zero.
      *
      * @param instance the instance to be classified
-     * @return an array with membership degrees for all the various classes in
-     * the data set
+     * @return an array with membership degrees for all the various classes in the data set
      */
     Map<Object, Double> classDistribution(Instance instance);
 

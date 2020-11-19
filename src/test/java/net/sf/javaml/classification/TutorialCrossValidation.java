@@ -27,6 +27,7 @@ import java.util.Map;
 
 import org.junit.Test;
 
+import lombok.extern.slf4j.Slf4j;
 import net.sf.javaml.classification.evaluation.CrossValidation;
 import net.sf.javaml.classification.evaluation.PerformanceMeasure;
 import net.sf.javaml.core.Dataset;
@@ -37,16 +38,18 @@ import net.sf.javaml.tools.data.FileHandler;
  *
  * @author Thomas Abeel
  */
+@Slf4j
 public class TutorialCrossValidation {
     /**
      * Default cross-validation with little options.
      */
     @Test
     public void testCrossValidation() {
+        String filePath = "./src/test/resources/net.sf.javaml/data/devtools/iris.data";
         /* Load data */
         Dataset data = null;
         try {
-            data = FileHandler.loadDataset(new File("/Users/caogaoli/IdeaProjects/javaml/src/test/resources/devtools/data/iris.data"), 4, ",");
+            data = FileHandler.loadDataset(new File(filePath), 4, ",");
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -57,8 +60,8 @@ public class TutorialCrossValidation {
         /* Perform 5-fold cross-validation on the data set */
         Map<Object, PerformanceMeasure> p = cv.crossValidation(data);
 
-        System.out.println("Accuracy=" + p.get("Iris-setosa").getAccuracy());
-        System.out.println(p);
+        log.info("Accuracy=" + p.get("Iris-setosa").getAccuracy());
+        log.info("result map {}", p);
     }
 
 }

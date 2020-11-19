@@ -37,7 +37,7 @@ public class TutorialFeatureRanking {
      */
     public static void main(String[] args) throws Exception {
         /* Load the iris data set */
-        Dataset data = FileHandler.loadDataset(new File("devtools/data/iris.data"), 4, ",");
+        Dataset data = FileHandler.loadDataset(new File("net.sf.javaml/data/devtools/iris.data"), 4, ",");
         /* Create a feature ranking algorithm */
         RecursiveFeatureEliminationSVM svmrfe = new RecursiveFeatureEliminationSVM(0.2);
         /* Apply the algorithm to the data set */

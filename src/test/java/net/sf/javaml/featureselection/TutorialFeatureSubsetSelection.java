@@ -39,7 +39,7 @@ public class TutorialFeatureSubsetSelection {
 
     public static void main(String[] args) throws Exception {
         /* Load the iris data set */
-        Dataset data = FileHandler.loadDataset(new File("devtools/data/iris.data"), 4, ",");
+        Dataset data = FileHandler.loadDataset(new File("net.sf.javaml/data/devtools/iris.data"), 4, ",");
         /*
          * Construct a greedy forward subset selector that will use the Pearson
          * correlation to determine the relation between each attribute and the

@@ -21,3 +21,4 @@ debug/
 lib/
 target /
 .idea/
+*.txt

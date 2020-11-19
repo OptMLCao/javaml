@@ -41,14 +41,7 @@ import java.util.Vector;
  */
 public class SparseInstance extends AbstractInstance implements Instance {
 
-    /**
-     * Sets the number of attributes that this sparse instance has.
-     *
-     * @param noAttributes
-     */
-    public void setNoAttributes(int noAttributes) {
-        this.noAttributes = noAttributes;
-    }
+    private static final long serialVersionUID = -7642462956857985858L;
 
     private HashMap<Integer, Double> data = new HashMap<Integer, Double>();
 
@@ -56,8 +49,6 @@ public class SparseInstance extends AbstractInstance implements Instance {
 
     /* The number of attributes */
     private int noAttributes = -1;
-
-    private static final long serialVersionUID = -7642462956857985858L;
 
     public SparseInstance() {
         this(-1);
@@ -82,6 +73,10 @@ public class SparseInstance extends AbstractInstance implements Instance {
     public SparseInstance(int noAttributes, double defaultValue, Object classValue) {
         super(classValue);
         this.defaultValue = defaultValue;
+        this.noAttributes = noAttributes;
+    }
+
+    public void setNoAttributes(int noAttributes) {
         this.noAttributes = noAttributes;
     }
 
@@ -110,9 +105,11 @@ public class SparseInstance extends AbstractInstance implements Instance {
     private void initiate(double[] datavector) {
         data.clear();
         noAttributes = datavector.length;
-        for (int i = 0; i < datavector.length; i++)
-            if (datavector[i] != defaultValue)
+        for (int i = 0; i < datavector.length; i++) {
+            if (datavector[i] != defaultValue) {
                 put(i, datavector[i]);
+            }
+        }
     }
 
     @Override
@@ -142,10 +139,11 @@ public class SparseInstance extends AbstractInstance implements Instance {
 
     @Override
     public Double get(Object key) {
-        if (data.containsKey(key))
+        if (data.containsKey(key)) {
             return data.get(key);
-        else
+        } else {
             return defaultValue;
+        }
     }
 
     @Override
@@ -163,13 +161,11 @@ public class SparseInstance extends AbstractInstance implements Instance {
     @Override
     public Double put(Integer key, Double value) {
         return data.put(key, value);
-
     }
 
     @Override
     public void putAll(Map<? extends Integer, ? extends Double> m) {
         data.putAll(m);
-
     }
 
     @Override
@@ -188,8 +184,6 @@ public class SparseInstance extends AbstractInstance implements Instance {
         return data.values();
     }
 
-    // private int maxIndex = 0;
-
     @Override
     public int noAttributes() {
         if (noAttributes < 0) {
@@ -198,10 +192,9 @@ public class SparseInstance extends AbstractInstance implements Instance {
             } else {
                 return Collections.max(data.keySet()) + 1;
             }
-
-        } else
+        } else {
             return noAttributes;
-
+        }
     }
 
     @Override
@@ -212,14 +205,12 @@ public class SparseInstance extends AbstractInstance implements Instance {
         Collections.sort(indices);
         for (int i = 0; i < indices.size(); i++) {
             int index = indices.get(i);
-
             if (index > remove) {
                 data.put(index - 1, data.get(index));
                 data.remove(index);
             }
         }
         noAttributes--;
-
     }
 
     @Override
@@ -240,20 +231,28 @@ public class SparseInstance extends AbstractInstance implements Instance {
 
     @Override
     public boolean equals(Object obj) {
-        if (this == obj)
+        if (this == obj) {
             return true;
-        if (obj == null)
+        }
+        if (obj == null) {
             return false;
-        if (getClass() != obj.getClass())
+        }
+        if (getClass() != obj.getClass()) {
             return false;
+        }
         final SparseInstance other = (SparseInstance) obj;
         if (data == null) {
-            if (other.data != null)
-                return false;
-        } else if (!data.equals(other.data))
+            {
+                if (other.data != null) {
+                    return false;
+                }
+            }
+        } else if (!data.equals(other.data)) {
             return false;
-        if (Double.doubleToLongBits(defaultValue) != Double.doubleToLongBits(other.defaultValue))
+        }
+        if (Double.doubleToLongBits(defaultValue) != Double.doubleToLongBits(other.defaultValue)) {
             return false;
+        }
         return true;
     }
 
@@ -266,7 +265,6 @@ public class SparseInstance extends AbstractInstance implements Instance {
         out.noAttributes = this.noAttributes;
         out.setClassValue(this.classValue());
         return out;
-
     }
 
     @Override
@@ -277,6 +275,6 @@ public class SparseInstance extends AbstractInstance implements Instance {
         for (int i = indix.size() - 1; i >= 0; i--) {
             removeAttribute(indix.get(i));
         }
-
     }
+
 }

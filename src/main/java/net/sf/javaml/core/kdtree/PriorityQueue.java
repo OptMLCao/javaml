@@ -26,7 +26,7 @@
 package net.sf.javaml.core.kdtree;
 
 /**
- * 自行实现有优先队列.
+ * 优先队列.
  */
 class PriorityQueue implements java.io.Serializable {
 
@@ -53,11 +53,13 @@ class PriorityQueue implements java.io.Serializable {
 
     /**
      * This contains the list of objects in the queue.
+     * 存储队列中的元素.
      */
     private Object[] data;
 
     /**
-     * This contains the list of prioritys in the queue.
+     * This contains the list of priority in the queue.
+     * 存储优先级别.
      */
     private double[] value;
 
@@ -100,8 +102,8 @@ class PriorityQueue implements java.io.Serializable {
      * queue an to leave in the order of priority i.e the highest priority get's
      * to leave first.
      *
-     * @param capacity    the initial capacity of the queue before a resize
-     * @param maxPriority is the maximum possible priority for an object
+     * @param capacity    the initial capacity of the queue before a resize 初始容量
+     * @param maxPriority is the maximum possible priority for an object    最大优先级
      */
     public PriorityQueue(int capacity, double maxPriority) {
         this.maxPriority = maxPriority;
@@ -119,6 +121,7 @@ class PriorityQueue implements java.io.Serializable {
      */
     private void init(int size) {
         capacity = size;
+        // 注意：长度+1
         data = new Object[capacity + 1];
         value = new double[capacity + 1];
         value[0] = maxPriority;
@@ -141,15 +144,17 @@ class PriorityQueue implements java.io.Serializable {
             expandCapacity();
         }
         /* put this as the last element */
+        // 难道不校验下@priority 是否超过 maxPriority;
         value[count] = priority;
         data[count] = element;
         bubbleUp(count);
     }
 
     /**
-     * Remove is a function to remove the element in the queue with the maximum
-     * priority. Once the element is removed then it can never be recovered from
+     * Remove is a function to remove the element in the queue with the maximum priority.
+     * Once the element is removed then it can never be recovered from
      * the queue with further calls. The lowest priority object will leave last.
+     * 高优的元素先出，越低优的元素越后面出来.
      *
      * @return the object with the highest priority or if it's empty null
      */
@@ -227,7 +232,9 @@ class PriorityQueue implements java.io.Serializable {
      * @param pos the position in the arrays of the object to be bubbled up
      */
     private void bubbleUp(int pos) {
+        // 元素
         Object element = data[pos];
+        // 优先级
         double priority = value[pos];
         /* when the parent is not less than the child, end */
         while (value[pos / 2] < priority) {
@@ -244,8 +251,8 @@ class PriorityQueue implements java.io.Serializable {
      * This ensures that there is enough space to keep adding elements to the
      * priority queue. It is however advised to make the capacity of the queue
      * large enough so that this will not be used as it is an expensive method.
-     * This will copy across from 0 as 'off' equals 0 is contains some important
-     * data.
+     * This will copy across from 0 as 'off' equals 0 is contains some important data.
+     * 优先队列扩容.
      */
     private void expandCapacity() {
         capacity = count * 2;

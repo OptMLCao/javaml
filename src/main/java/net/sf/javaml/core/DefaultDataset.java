@@ -179,8 +179,13 @@ public class DefaultDataset extends Vector<Instance> implements Dataset {
         return max;
     }
 
+    /**
+     * @param numFolds the number of folds to create 对折的次数.
+     * @param random   选择元素的随机因子.
+     * @return 对折划分后的采样子集.
+     */
     @Override
-    public Dataset[] folds(int numFolds, Random rg) {
+    public Dataset[] folds(int numFolds, Random random) {
         Dataset[] out = new Dataset[numFolds];
         List<Integer> indices = new Vector<Integer>();
         for (int i = 0; i < this.size(); i++) {
@@ -190,10 +195,11 @@ public class DefaultDataset extends Vector<Instance> implements Dataset {
         int[][] array = new int[numFolds][size];
         for (int i = 0; i < size; i++) {
             for (int j = 0; j < numFolds; j++) {
-                if (indices.size() > 0)
-                    array[j][i] = indices.remove(rg.nextInt(indices.size()));
-                else
+                if (indices.size() > 0) {
+                    array[j][i] = indices.remove(random.nextInt(indices.size()));
+                } else {
                     array[j][i] = -1;
+                }
             }
         }
         for (int i = 0; i < numFolds; i++) {
@@ -206,7 +212,6 @@ public class DefaultDataset extends Vector<Instance> implements Dataset {
                 System.arraycopy(array[i], 0, indi, 0, size);
             }
             out[i] = new Fold(this, indi);
-
         }
         return out;
     }

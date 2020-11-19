@@ -26,7 +26,6 @@
 package net.sf.javaml.core.kdtree;
 
 // Bjoern Heckel's solution to the KD-Tree n-nearest-neighbor problem
-
 class NearestNeighborList {
 
     public static int REMOVE_HIGHEST = 1;
@@ -54,6 +53,7 @@ class NearestNeighborList {
             m_Queue.add(object, priority);
             return true;
         }
+        // 若超出设置最大优先级范围.
         if (priority > m_Queue.getMaxPriority()) {
             // do not insert - all elements in queue have lower priority
             return false;
@@ -85,4 +85,5 @@ class NearestNeighborList {
         // remove object with highest priority
         return m_Queue.remove();
     }
+
 }

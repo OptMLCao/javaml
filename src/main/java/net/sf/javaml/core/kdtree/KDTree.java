@@ -44,6 +44,7 @@ import java.util.Vector;
  * </UL>
  * <p>
  * k-d树是每个节点都为k维点的二叉树，所有非叶子节点可以视作用一个超平面把空间分割成两个半空间。
+ * 是一种分割k维数据空间的数据结构。主要应用于多维空间关键数据的搜索。
  *
  * @author Simon Levy, Bjoern Heckel
  * @version %I%, %G%
@@ -66,7 +67,6 @@ public class KDTree {
      * @param k number of dimensions
      */
     public KDTree(int k) {
-
         m_K = k;
         m_root = null;
     }
@@ -89,12 +89,11 @@ public class KDTree {
      * @throws KeyDuplicateException if key already in tree
      */
     public void insert(double[] key, Object value) {
-
         if (key.length != m_K) {
             throw new RuntimeException("KDTree: wrong key size!");
-        } else
+        } else {
             m_root = KDNode.ins(new HPoint(key), value, m_root, 0, m_K);
-
+        }
         m_count++;
     }
 

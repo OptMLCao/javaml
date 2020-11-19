@@ -30,15 +30,24 @@ import java.util.Set;
 import java.util.SortedSet;
 import java.util.Vector;
 
+import lombok.extern.slf4j.Slf4j;
 import net.sf.javaml.distance.DistanceMeasure;
 
+/**
+ * 训来数据集划分出来的子集.
+ */
+@Slf4j
 class Fold implements Dataset {
+
+    // 父集合
+    private Dataset parent;
+    // 子集合
     private int[] indices;
 
-    private Dataset parent;
-
     public Fold(Dataset parent, int[] indices) {
-        // System.out.println("construction: "+parent.classes());
+        if (log.isInfoEnabled()) {
+            log.info("construction: " + parent.classes());
+        }
         this.indices = indices;
         this.parent = parent;
     }
@@ -62,9 +71,6 @@ class Fold implements Dataset {
 
     @Override
     public Instance instance(int index) {
-        // System.out.println(parent);
-        // System.out.println(parent.size());
-        // System.out.println(index);
         return parent.instance(indices[index]);
     }
 
@@ -285,4 +291,5 @@ class Fold implements Dataset {
             out.add(i.copy());
         return out;
     }
+
 }

@@ -23,6 +23,7 @@ package net.sf.javaml.core;
 
 /**
  * Implements a mutable Complex number.
+ * 复数对象.
  *
  * @author Thomas Abeel
  * @version 0.1.7
@@ -32,11 +33,13 @@ public class Complex {
 
     /**
      * The imaginary part of this complex number.
+     * 虚数部分.
      */
     public double im = 0;
 
     /**
      * The real part of this imaginary number
+     * 实数部分.
      */
     public double re = 0;
 
@@ -67,7 +70,7 @@ public class Complex {
 
     /**
      * Takes the absolute value of this complex number. Basically it returns
-     * |this|.
+     * |this|. 绝对值.
      *
      * @return the absolute value of this complex number
      */

@@ -27,29 +27,49 @@ package net.sf.javaml.core.kdtree;
 
 import java.util.Vector;
 
-// K-D Tree node class
-
+/**
+ * K-D Tree node class
+ */
 class KDNode {
 
     // these are seen by KDTree
-    protected HPoint k;
+    protected HPoint hPoint;
 
-    Object v;
+    Object val;
 
-    protected KDNode left, right;
+    protected KDNode left;
+
+    protected KDNode right;
 
     protected boolean deleted;
+
+    /**
+     * constructor is used only by class; other methods are static
+     * 注意是私有的.
+     *
+     * @param key
+     * @param val
+     */
+    private KDNode(HPoint key, Object val) {
+        this.hPoint = key;
+        this.val = val;
+        this.left = null;
+        this.right = null;
+        this.deleted = false;
+    }
 
     // Method ins translated from 352.ins.c of Gonnet & Baeza-Yates
     protected static KDNode ins(HPoint key, Object val, KDNode t, int lev, int K) {
         if (t == null) {
+            // t==null时，先创建树的根节点.
             t = new KDNode(key, val);
-        } else if (key.equals(t.k)) {
+        } else if (key.equals(t.hPoint)) {
             if (t.deleted) {
                 t.deleted = false;
-                t.v = val;
+                t.val = val;
             }
-        } else if (key.coord[lev] > t.k.coord[lev]) {
+        } else if (key.coord[lev] > t.hPoint.coord[lev]) {
+            // 注意 (lev + 1) % K 是求余运算，有意思.
             t.right = ins(key, val, t.right, (lev + 1) % K, K);
         } else {
             t.left = ins(key, val, t.left, (lev + 1) % K, K);
@@ -60,9 +80,9 @@ class KDNode {
     // Method srch translated from 352.srch.c of Gonnet & Baeza-Yates
     protected static KDNode srch(HPoint key, KDNode t, int K) {
         for (int lev = 0; t != null; lev = (lev + 1) % K) {
-            if (!t.deleted && key.equals(t.k)) {
+            if (!t.deleted && key.equals(t.hPoint)) {
                 return t;
-            } else if (key.coord[lev] > t.k.coord[lev]) {
+            } else if (key.coord[lev] > t.hPoint.coord[lev]) {
                 t = t.right;
             } else {
                 t = t.left;
@@ -76,16 +96,16 @@ class KDNode {
         if (t == null) {
             return;
         }
-        if (lowk.coord[lev] <= t.k.coord[lev]) {
+        if (lowk.coord[lev] <= t.hPoint.coord[lev]) {
             rsearch(lowk, uppk, t.left, (lev + 1) % K, K, v);
         }
         int j;
-        for (j = 0; j < K && lowk.coord[j] <= t.k.coord[j] && uppk.coord[j] >= t.k.coord[j]; j++)
+        for (j = 0; j < K && lowk.coord[j] <= t.hPoint.coord[j] && uppk.coord[j] >= t.hPoint.coord[j]; j++)
             ;
         if (j == K) {
             v.add(t);
         }
-        if (uppk.coord[lev] > t.k.coord[lev]) {
+        if (uppk.coord[lev] > t.hPoint.coord[lev]) {
             rsearch(lowk, uppk, t.right, (lev + 1) % K, K, v);
         }
     }
@@ -94,7 +114,7 @@ class KDNode {
     // comments are direct quotes from there. Step "SDL" is added to
     // make the algorithm work correctly. NearestNeighborList solution
     // courtesy of Bjoern Heckel.
-    protected static void nnbr(KDNode kd, HPoint target, HRect hr, double max_dist_sqd, int lev, int K,
+    protected static void nnbr(KDNode kd, HPoint target, HRectangle hr, double max_dist_sqd, int lev, int K,
                                NearestNeighborList nnl) {
 
         // 1. if kd is empty then set dist-sqd to infinity and exit.
@@ -106,14 +126,14 @@ class KDNode {
         int s = lev % K;
 
         // 3. pivot := dom-elt field of kd
-        HPoint pivot = kd.k;
+        HPoint pivot = kd.hPoint;
         double pivot_to_target = HPoint.sqrdist(pivot, target);
 
         // 4. Cut hr into to sub-hyperrectangles left-hr and right-hr.
         // The cut plane is through pivot and perpendicular to the s
         // dimension.
-        HRect left_hr = hr; // optimize by not cloning
-        HRect right_hr = (HRect) hr.clone();
+        HRectangle left_hr = hr; // optimize by not cloning
+        HRectangle right_hr = (HRectangle) hr.clone();
         left_hr.max.coord[s] = pivot.coord[s];
         right_hr.min.coord[s] = pivot.coord[s];
 
@@ -121,9 +141,9 @@ class KDNode {
         boolean target_in_left = target.coord[s] < pivot.coord[s];
 
         KDNode nearer_kd;
-        HRect nearer_hr;
+        HRectangle nearer_hr;
         KDNode further_kd;
-        HRect further_hr;
+        HRectangle further_hr;
 
         // 6. if target-in-left then
         // 6.1. nearer-kd := left field of kd and nearer-hr := left-hr
@@ -214,18 +234,9 @@ class KDNode {
         }
     }
 
-    // constructor is used only by class; other methods are static
-    private KDNode(HPoint key, Object val) {
-
-        k = key;
-        v = val;
-        left = null;
-        right = null;
-        deleted = false;
-    }
 
     protected String toString(int depth) {
-        String s = k + "  " + v + (deleted ? "*" : "");
+        String s = hPoint + "  " + val + (deleted ? "*" : "");
         if (left != null) {
             s = s + "\n" + pad(depth) + "L " + left.toString(depth + 1);
         }
@@ -243,7 +254,7 @@ class KDNode {
         return s;
     }
 
-    private static void hrcopy(HRect hr_src, HRect hr_dst) {
+    private static void hrcopy(HRectangle hr_src, HRectangle hr_dst) {
         hpcopy(hr_src.min, hr_dst.min);
         hpcopy(hr_src.max, hr_dst.max);
     }
@@ -253,4 +264,5 @@ class KDNode {
             hp_dst.coord[i] = hp_src.coord[i];
         }
     }
+
 }

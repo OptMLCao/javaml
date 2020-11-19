@@ -85,8 +85,7 @@ public class KDTree {
      *
      * @param key   key for KD-tree node
      * @param value value at that key
-     * @throws KeySizeException      if key.length mismatches K
-     * @throws KeyDuplicateException if key already in tree
+     * @throws RuntimeException if key.length != m_k
      */
     public void insert(double[] key, Object value) {
         if (key.length != m_K) {
@@ -103,41 +102,35 @@ public class KDTree {
      *
      * @param key key for KD-tree node
      * @return object at key, or null if not found
-     * @throws KeySizeException if key.length mismatches K
+     * @throws RuntimeException if key.length != m_k
      */
     public Object search(double[] key) {
-
         if (key.length != m_K) {
             throw new RuntimeException("KDTree: wrong key size!");
         }
-
         KDNode kd = KDNode.srch(new HPoint(key), m_root, m_K);
-
-        return (kd == null ? null : kd.v);
+        return (kd == null ? null : kd.val);
     }
 
     /**
      * Delete a node from a KD-tree. Instead of actually deleting node and
      * rebuilding tree, marks node as deleted. Hence, it is up to the caller to
      * rebuild the tree as needed for efficiency.
+     * 先找到要删除的树节点，在删除.
      *
      * @param key key for KD-tree node
-     * @throws KeySizeException    if key.length mismatches K
-     * @throws KeyMissingException if no node in tree has key
+     * @throws RuntimeException if key.length mismatches K
      */
     public void delete(double[] key) {
-
         if (key.length != m_K) {
             throw new RuntimeException("KDTree: wrong key size!");
         } else {
-
             KDNode t = KDNode.srch(new HPoint(key), m_root, m_K);
             if (t == null) {
                 throw new RuntimeException("KDTree: key missing!");
             } else {
                 t.deleted = true;
             }
-
             m_count--;
         }
     }
@@ -160,10 +153,10 @@ public class KDTree {
      *
      * @param key key for KD-tree node
      * @return object at node nearest to key, or null on failure
-     * @throws KeySizeException if key.length mismatches K
+     * @throws RuntimeException         if key.length mismatches K
+     * @throws IllegalArgumentException if <I>n</I> is negative or exceeds tree size
      */
     public Object nearest(double[] key) {
-
         Object[] nbrs = nearest(key, 1);
         return nbrs[0];
     }
@@ -176,11 +169,10 @@ public class KDTree {
      * @param key key for KD-tree node
      * @param n   how many neighbors to find
      * @return objects at node nearest to key, or null on failure
-     * @throws KeySizeException         if key.length mismatches K
+     * @throws RuntimeException         if key.length mismatches K
      * @throws IllegalArgumentException if <I>n</I> is negative or exceeds tree size
      */
     public Object[] nearest(double[] key, int n) {
-
         if (n < 0 || n > m_count) {
             throw new IllegalArgumentException("Number of neighbors (" + n + ") cannot"
                     + " be negative or greater than number of nodes (" + m_count + ").");
@@ -189,12 +181,10 @@ public class KDTree {
         if (key.length != m_K) {
             throw new RuntimeException("KDTree: wrong key size!");
         }
-
         Object[] nbrs = new Object[n];
         NearestNeighborList nnl = new NearestNeighborList(n);
-
         // initial call is with infinite hyper-rectangle and max distance
-        HRect hr = HRect.infiniteHRect(key.length);
+        HRectangle hr = HRectangle.infiniteHRect(key.length);
         double max_dist_sqd = Double.MAX_VALUE;
         HPoint keyp = new HPoint(key);
 
@@ -202,9 +192,8 @@ public class KDTree {
 
         for (int i = 0; i < n; ++i) {
             KDNode kd = (KDNode) nnl.removeHighest();
-            nbrs[n - i - 1] = kd.v;
+            nbrs[n - i - 1] = kd.val;
         }
-
         return nbrs;
     }
 
@@ -215,7 +204,7 @@ public class KDTree {
      * @param lowk lower-bounds for key
      * @param uppk upper-bounds for key
      * @return array of Objects whose keys fall in range [lowk,uppk]
-     * @throws KeySizeException on mismatch among lowk.length, uppk.length, or K
+     * @throws RuntimeException on mismatch among lowk.length, uppk.length, or K
      */
     public Object[] range(double[] lowk, double[] uppk) {
 
@@ -229,7 +218,7 @@ public class KDTree {
             Object[] o = new Object[v.size()];
             for (int i = 0; i < v.size(); ++i) {
                 KDNode n = v.elementAt(i);
-                o[i] = n.v;
+                o[i] = n.val;
             }
             return o;
         }
@@ -238,4 +227,5 @@ public class KDTree {
     public String toString() {
         return m_root.toString(0);
     }
+
 }

@@ -40,6 +40,9 @@ public abstract class AbstractInstance implements Instance {
 
     private final int ID;
 
+    // 数据实例对应的分类.
+    private Object classValue;
+
     public int getID() {
         return ID;
     }
@@ -71,8 +74,6 @@ public abstract class AbstractInstance implements Instance {
     public Iterator<Double> iterator() {
         return new InstanceValueIterator();
     }
-
-    private Object classValue;
 
     protected AbstractInstance() {
         this(null);
@@ -195,4 +196,5 @@ public abstract class AbstractInstance implements Instance {
         }
         return out;
     }
+
 }

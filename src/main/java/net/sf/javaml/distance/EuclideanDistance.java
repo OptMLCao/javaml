@@ -1,45 +1,42 @@
 /**
  * This file is part of the Java Machine Learning Library
- * 
+ * <p>
  * The Java Machine Learning Library is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
  * (at your option) any later version.
- * 
+ * <p>
  * The Java Machine Learning Library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with the Java Machine Learning Library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
- * 
+ * <p>
  * Copyright (c) 2006-2012, Thomas Abeel
- * 
+ * <p>
  * Project: http://java-ml.sourceforge.net/
- * 
  */
 package net.sf.javaml.distance;
 
 import net.sf.javaml.core.Instance;
 
 /**
+ * 欧式距离.
  * This class implements the Euclidean distance.
- * 
+ * <p>
  * The Euclidean distance between two points P=(p1,p2,...,pn) and
  * Q=(q1,q2,...,qn) in the Euclidean n-space is defined as: sqrt((p1-q1)^2 +
  * (p2-q2)^2 + ... + (pn-qn)^2)
- * 
+ * <p>
  * The Euclidean distance is a special instance of the NormDistance. The
  * Euclidean distance corresponds to the 2-norm distance.
- * 
- * 
- * 
+ *
+ * @author Thomas Abeel
  * @linkplain http://en.wikipedia.org/wiki/Euclidean_distance
  * @linkplain http://en.wikipedia.org/wiki/Euclidean_space
- * @author Thomas Abeel
- * 
  */
 public class EuclideanDistance extends NormDistance {
 
@@ -57,4 +54,5 @@ public class EuclideanDistance extends NormDistance {
         }
         return Math.sqrt(sum);
     }
+
 }

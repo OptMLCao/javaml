@@ -43,13 +43,18 @@ public class DefaultDataset extends Vector<Instance> implements Dataset {
 
     private int maxAttributes = 0;
 
+    private static final long serialVersionUID = 8586030444860912681L;
+
+    // classes使用TreeSe, 天生具备排序属性;
+    private TreeSet<Object> classes = new TreeSet<Object>();
+
     /**
      * Creates a data set that contains the provided instances
      *
-     * @param coll collection with instances
+     * @param collection collection with instances
      */
-    public DefaultDataset(Collection<Instance> coll) {
-        this.addAll(coll);
+    public DefaultDataset(Collection<Instance> collection) {
+        this.addAll(collection);
     }
 
     /**
@@ -59,35 +64,31 @@ public class DefaultDataset extends Vector<Instance> implements Dataset {
         // nothing to do.
     }
 
-    private void check(Collection<? extends Instance> c) {
-        for (Instance i : c)
-            check(i);
+    private void check(Collection<? extends Instance> instances) {
+        for (Instance instance : instances)
+            check(instance);
     }
 
-    private void check(Instance i) {
-
-        if (i.classValue() != null)
-            classes.add(i.classValue());
-        if (i.noAttributes() > maxAttributes)
-            maxAttributes = i.noAttributes();
-    }
-
-    @Override
-    public synchronized boolean addAll(Collection<? extends Instance> c) {
-        check(c);
-        return super.addAll(c);
+    private void check(Instance instance) {
+        if (instance.classValue() != null) {
+            classes.add(instance.classValue());
+        }
+        if (instance.noAttributes() > maxAttributes) {
+            maxAttributes = instance.noAttributes();
+        }
     }
 
     @Override
-    public synchronized boolean addAll(int index, Collection<? extends Instance> c) {
-        check(c);
-        return super.addAll(index, c);
+    public synchronized boolean addAll(Collection<? extends Instance> instances) {
+        check(instances);
+        return super.addAll(instances);
     }
 
-    private static final long serialVersionUID = 8586030444860912681L;
-
-    // classes使用TreeSe, 天生具备排序属性;
-    private TreeSet<Object> classes = new TreeSet<Object>();
+    @Override
+    public synchronized boolean addAll(int index, Collection<? extends Instance> instances) {
+        check(instances);
+        return super.addAll(index, instances);
+    }
 
     @Override
     public void clear() {
@@ -139,22 +140,21 @@ public class DefaultDataset extends Vector<Instance> implements Dataset {
     /**
      * Returns the k instances of the given data set that are the closest to the instance that is given as a parameter.
      *
-     * @param dm   the distance measure used to calculate the distance between instances.
-     * @param inst the instance for which we need to find the closest
-     * @return the instances from the supplied data set that are closest to the
-     * supplied instance
+     * @param distanceMeasure the distance measure used to calculate the distance between instances.
+     * @param inst            the instance for which we need to find the closest
+     * @return the instances from the supplied data set that are closest to the supplied instance
      */
     @Override
-    public Set<Instance> kNearest(int k, Instance inst, DistanceMeasure dm) {
-        // k最邻近
+    public Set<Instance> kNearest(int k, Instance inst, DistanceMeasure distanceMeasure) {
+        // k最邻近, 使用hashMap作为存储单元.
         Map<Instance, Double> closest = new HashMap<Instance, Double>();
-        double max = dm.getMaxValue();
+        double max = distanceMeasure.getMaxValue();
         for (Instance instance : this) {
-            double d = dm.measure(inst, instance);
-            if (dm.compare(d, max) && !inst.equals(instance)) {
+            double d = distanceMeasure.measure(inst, instance);
+            if (distanceMeasure.compare(d, max) && !inst.equals(instance)) {
                 closest.put(instance, d);
                 if (closest.size() > k)
-                    max = removeFarthest(closest, dm);
+                    max = removeFarthest(closest, distanceMeasure);
             }
 
         }
@@ -163,13 +163,14 @@ public class DefaultDataset extends Vector<Instance> implements Dataset {
 
     /*
      * Removes the element from the vector that is farthest from the supplied element.
+     * && return the max distance for the KNear Instance.
      */
-    private double removeFarthest(Map<Instance, Double> vector, DistanceMeasure dm) {
+    private double removeFarthest(Map<Instance, Double> vector, DistanceMeasure distanceMeasure) {
         Instance tmp = null;
-        double max = dm.getMinValue();
+        double max = distanceMeasure.getMinValue();
         for (Instance instance : vector.keySet()) {
             double d = vector.get(instance);
-            if (dm.compare(max, d)) {
+            if (distanceMeasure.compare(max, d)) {
                 max = d;
                 tmp = instance;
             }

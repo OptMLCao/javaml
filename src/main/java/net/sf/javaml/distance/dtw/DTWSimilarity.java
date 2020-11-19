@@ -1,24 +1,23 @@
 /**
  * This file is part of the Java Machine Learning Library
- * 
+ * <p>
  * The Java Machine Learning Library is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
  * (at your option) any later version.
- * 
+ * <p>
  * The Java Machine Learning Library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with the Java Machine Learning Library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
- * 
+ * <p>
  * Copyright (c) 2006-2012, Thomas Abeel
- * 
+ * <p>
  * Project: http://java-ml.sourceforge.net/
- * 
  */
 package net.sf.javaml.distance.dtw;
 
@@ -31,10 +30,11 @@ import net.sf.javaml.distance.AbstractSimilarity;
  * A similarity measure based on "Dynamic Time Warping". The DTW distance is
  * mapped to a similarity measure using f(x)= 1 - (x / (1 + x)). Feature weights
  * are also supported.
- * 
+ *
  * @author Piotr Kasprzak
  * @author Thomas Abeel
- * 
+ * 时间序列相似性度量.
+ * Dynamic Time Warping (DTW)本质上和通过动态规划来计算这个序列的相似距离.
  */
 public class DTWSimilarity extends AbstractSimilarity {
 
@@ -57,6 +57,7 @@ public class DTWSimilarity extends AbstractSimilarity {
         int i, j;
 
         /** Filter NaNs */
+        // 遍历两个Instance取出全部特征.
         for (i = 0; i < x.noAttributes(); i++) {
             double value = x.value(i);
             if (!Double.isNaN(value)) {
@@ -138,7 +139,7 @@ public class DTWSimilarity extends AbstractSimilarity {
 
         for (i = 1; i < ts1.length; i++) { // Fill the rest
             for (j = 1; j < ts2.length; j++) {
-                double[] steps = { D[i - 1][j - 1], D[i - 1][j], D[i][j - 1] };
+                double[] steps = {D[i - 1][j - 1], D[i - 1][j], D[i][j - 1]};
                 double min = Math.min(steps[0], Math.min(steps[1], steps[2]));
                 D[i][j] = dP2P[i][j] + min;
             }
@@ -159,7 +160,7 @@ public class DTWSimilarity extends AbstractSimilarity {
             } else if (j == 0) {
                 i--;
             } else {
-                double[] steps = { D[i - 1][j - 1], D[i - 1][j], D[i][j - 1] };
+                double[] steps = {D[i - 1][j - 1], D[i - 1][j], D[i][j - 1]};
                 double min = Math.min(steps[0], Math.min(steps[1], steps[2]));
 
                 if (min == steps[0]) {

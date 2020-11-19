@@ -21,6 +21,10 @@
  */
 package net.sf.javaml.core;
 
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Random;
+import java.util.Set;
 import java.util.SortedSet;
 
 import org.junit.Test;
@@ -40,9 +44,8 @@ import net.sf.javaml.tools.InstanceTools;
  * <p>
  * Basically a data set is a collection of instances.
  *
- * @author Thomas Abeel
+ * @author Thomas Abeel, Grand Cao.
  * @version 0.1.7
- * @see CreatingAnInstance
  * @see net.sf.javaml.core.Instance
  * @see Dataset
  * @see net.sf.javaml.core.DefaultDataset
@@ -55,7 +58,7 @@ public class TutorialDataset {
      * Create a data set and put some instances in it.
      */
     @Test
-    public void tesDataset() {
+    public void testDataset() {
         Dataset data = new DefaultDataset();
         for (int i = 0; i < 10; i++) {
             Instance tmpInstance = InstanceTools.randomInstance(25);
@@ -67,5 +70,30 @@ public class TutorialDataset {
         System.out.println(classValues);
         log.info("class values {}", classValues);
     }
+
+    @Test
+    public void testDatasetWithDenseInstance() {
+        Dataset dataset = new DefaultDataset();
+        int epochSize = 10;
+        int randomSeed = 5;
+        int keySizes = 3;
+        int attributeDims = 10;
+        Random random = new Random(randomSeed);
+        while (epochSize > 0) {
+            DenseInstance denseInstance = new DenseInstance(attributeDims);
+            Set<Integer> keySet = new HashSet<>();
+            while (keySet.size() <= keySizes) {
+                keySet.add(random.nextInt(attributeDims));
+            }
+            keySet.stream().forEach(key -> denseInstance.put(key, random.nextDouble()));
+            log.info("insert instance {}", denseInstance);
+            dataset.add(denseInstance);
+            epochSize--;
+        }
+        log.info("dataset size {}", dataset.size());
+        log.info("dataset {}", dataset);
+        log.info("dataset store elements {}", dataset.classes());
+    }
+
 
 }

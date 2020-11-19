@@ -44,8 +44,8 @@ public interface DistanceMeasure extends Serializable {
     /**
      * Calculates the distance between two instances.
      *
-     * @param i the first instance
-     * @param j the second instance
+     * @param x the first instance
+     * @param y the second instance
      * @return the distance between the two instances
      */
     public double measure(Instance x, Instance y);

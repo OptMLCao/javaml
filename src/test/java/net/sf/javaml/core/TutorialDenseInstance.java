@@ -21,6 +21,14 @@
  */
 package net.sf.javaml.core;
 
+import java.lang.reflect.Array;
+import java.lang.reflect.Method;
+import java.util.Collection;
+import java.util.List;
+import java.util.function.Function;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
 import org.junit.Test;
 
 import lombok.extern.slf4j.Slf4j;
@@ -37,7 +45,7 @@ import lombok.extern.slf4j.Slf4j;
  * <p>
  * {@jmlSource}
  *
- * @author Thomas Abeel
+ * @author Thomas Abeel, Grand Cao.
  * @version 0.1.7
  * @see net.sf.javaml.core.Instance
  * @see net.sf.javaml.core.DenseInstance
@@ -74,12 +82,34 @@ public class TutorialDenseInstance {
          * parameters.
          */
         Instance instanceWithClassValue = new DenseInstance(values, 1);
-
         System.out.println("Instance with class value set to 1: ");
         log.info("Instance with class value set to 1: {}", instanceWithClassValue);
         System.out.println(instanceWithClassValue);
         System.out.println();
 
+    }
+
+    @Test
+    public void testCopyDenseInstance() {
+        double[] values = new double[]{1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+        log.info("input values length {}", values.length);
+        Instance instance = new DenseInstance(values);
+        log.info("dense instance {}", instance);
+        String instanceInterfaceName = Instance.class.getName();
+        List<String> actualInstanceObj = Stream.of(instance.getClass().getInterfaces())
+                .filter(face -> face.getName().equalsIgnoreCase(instanceInterfaceName))
+                .map(face -> Stream.of(face.getMethods()).map(Method::getName).collect(Collectors.toList()))
+                .flatMap(Collection::stream).collect(Collectors.toList());
+        log.info("print instance Method Name ...");
+        actualInstanceObj.stream().forEach(System.out::println);
+        log.info("**************************************");
+        log.info("dense instance id {}", instance.getID());
+        log.info("dense instance HashCode {}", instance.hashCode());
+        Instance copyInstance = instance.copy();
+        log.info("copy dense instance id {}", copyInstance.getID());
+        log.info("copy dense instance HashCode {}", copyInstance.hashCode());
+        assert copyInstance.hashCode() == instance.hashCode()
+                : "as concrete instance Implement，hashCode must be the same.";
     }
 
 }

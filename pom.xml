@@ -41,6 +41,12 @@
             <artifactId>slf4j-log4j12</artifactId>
             <version>1.7.21</version>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/com.cedarsoft.commons/collections -->
+        <dependency>
+            <groupId>com.cedarsoft.commons</groupId>
+            <artifactId>collections</artifactId>
+            <version>8.1.0</version>
+        </dependency>
 
     </dependencies>
 

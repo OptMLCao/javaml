@@ -36,13 +36,14 @@ import net.sf.javaml.core.Instance;
  */
 public class MeanFeatureVotingClassifier extends AbstractMeanClassifier {
 
+    private static final long serialVersionUID = 2393351569825555546L;
+
     @Override
     public Map<Object, Double> classDistribution(Instance instance) {
         HashMap<Object, Double> voting = new HashMap<Object, Double>();
         int count = 0;
         for (Object o : parentClasses) {
             voting.put(o, 0.0);
-
         }
         for (int i = 0; i < instance.noAttributes(); i++) {
             double min = Double.POSITIVE_INFINITY;
@@ -53,18 +54,14 @@ public class MeanFeatureVotingClassifier extends AbstractMeanClassifier {
                     min = d;
                     vote = o;
                 }
-
             }
             voting.put(vote, voting.get(vote) + 1);
-            count++;
+            count++; // count=instance.noAttributes() ??
         }
         for (Object o : voting.keySet()) {
             voting.put(o, voting.get(o) / count);
         }
         return voting;
     }
-
-    private static final long serialVersionUID = 2393351569825555546L;
-
 
 }

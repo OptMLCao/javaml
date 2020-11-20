@@ -1,4 +1,5 @@
 # javaml --> machine learning for Java
+# support JDK1.8+
 
 # 模块功能解析
 .net.sf.javaml.classification: 分类算法，包括朴素贝叶斯、随机森林、Bagging、自组织映射、k-最近邻等；

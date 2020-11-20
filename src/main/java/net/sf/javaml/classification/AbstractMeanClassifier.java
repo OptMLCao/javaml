@@ -43,7 +43,6 @@ public class AbstractMeanClassifier extends AbstractClassifier {
 
     public Instance getMean(Object clazz) {
         return mean.get(clazz);
-
     }
 
     @Override
@@ -63,6 +62,6 @@ public class AbstractMeanClassifier extends AbstractClassifier {
         for (Object o : mean.keySet()) {
             mean.put(o, mean.get(o).divide(count.get(o)));
         }
-
     }
+
 }

@@ -39,7 +39,7 @@ public class NormalizedEuclideanSimilarity extends AbstractSimilarity {
     }
 
     public double measure(Instance i, Instance j) {
-        return 1 - dm.calculateDistance(i, j);
+        return 1 - dm.measure(i, j);
     }
 
 }

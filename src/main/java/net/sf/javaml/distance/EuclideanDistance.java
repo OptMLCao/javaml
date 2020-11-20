@@ -42,7 +42,12 @@ public class EuclideanDistance extends NormDistance {
 
     private static final long serialVersionUID = 6672471509639068507L;
 
-    public double calculateDistance(Instance x, Instance y) {
+    @Override
+    public double measure(Instance x, Instance y) {
+        return calculateDistance(x, y);
+    }
+
+    private double calculateDistance(Instance x, Instance y) {
         if (x.noAttributes() != x.noAttributes()) {
             throw new RuntimeException("Both instances should contain the same number of values.");
         }

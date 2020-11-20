@@ -12,3 +12,7 @@
 .net.sf.javaml.sampling: 选择数据子集的采样算法；
 .net.sf.javaml.tools: 数据集、实例化、Weka API接口等的使用方法；
 .net.sf.javaml.utils: 算法的实用方法，如统计、数学方法、列表等；
+
+# compile
+add dependent under path: lib/
+

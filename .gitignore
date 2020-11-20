@@ -21,3 +21,4 @@ debug/
 target /
 .idea/
 *.txt
+logs/
